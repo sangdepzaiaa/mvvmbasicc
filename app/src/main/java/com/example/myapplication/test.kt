@@ -45,17 +45,99 @@ fun hashmap(){
 }
 
 fun mutable(){
+    //tham trị luôn là biến nguyên thủy (Int, Double, Boolean, Char, …) cả immutable,mutable vì nó chiếm ít ô nhớ
+    val a = 5
+    var b = a
+    b += 4
+    print(a)
+    print(b)
+
+    // tham chiếu luôn là object (class, array, list, map …) cả immutable,mutable vì nó chiếm nhiều vùng nhớ
     val mutable = mutableListOf(2,2,2)
     val l = mutable
     l.add(3)
     println(l)
+    println(mutable)
+
 }
 
-class box<T>(var content: T){
+//================================================================GENERIC==============================================================================
+// nhiều tham số tương tự
+//Ngoài khai báo gì (T, R, E...) → con mặc định dùng lại được.
+//Nếu con tự khai báo <T> → đó là T mới, độc lập.
+//Muốn class con ăn theo generic của class cha → dùng inner class (thay vì nested class).
+fun <T> identity(value: T): T {  // bắt bộc phải có <T> vì nó là top level
+    return value
+}
+
+class box<T>(var content: T){  // các hàm hay class trong thì không cần thêm <T> vì nó ăn theo cha
     fun show(){
         print("$content")
     }
 }
+
+//Có thể viết fun <T> Int.xxx(): T?, nhưng nó không mang ý nghĩa thực tế, vì Int không có generic.
+//Chỉ List<T>, Set<T>, Map<K,V>, hoặc class/interface generic mới thật sự cần generic extension.
+
+fun <T> List<T>.secondOrNull(): T? {
+    return if (this.size >= 2) this[1] else null
+}
+
+
+interface repo<T>{
+    fun save(item : T)
+    fun getAll() : List<T>
+}
+
+class userrepo : repo<String>{
+    var mutable = mutableListOf<String>()
+    override fun save(item: String) {
+        mutable.add(item)
+
+    }
+
+    override fun getAll(): List<String> {
+        return mutable
+    }
+
+}
+
+sealed class Result<out T> {
+    data class Success<T>(val data: T): Result<T>()
+    data class Error(val message: String): Result<Nothing>()
+    object Loading: Result<Nothing>()
+}
+
+
+
+//=======================================================================OOP============================================================================
+//Trong Kotlin, mặc định class là final → không kế thừa được, muốn kế thừa đánh dấu open, abstract hoặc sealed
+// class con sẽ có 100% thuộc tính thg cha
+//,Function,Property (val/var) là final , phải để open mới override được
+//Abstract = phải override (no body)
+//Open = muốn thì override (open ở trước)
+//Final = chịu, không override (final ở trước)
+//Interface = không body thì abstract, có body thì open = non abstract
+//Property val → có thể nâng lên var, var → chỉ giữ var
+//Object = không override
+
+
+// interface không có constructor, absstruct thì có
+//Khi có logic + state chung → dùng abstract class
+//Khi cần chia sẻ hành vi, đa kế thừa → dùng interface
+
+
+
+abstract class A {
+   abstract fun a()
+}
+
+class B : A() {
+    override fun a() {
+
+    }
+}
+
 
 class cut(){
     var e = 5
@@ -178,6 +260,21 @@ fun all(){
 }
 
 
+class bov<T>(var content:T){
+    fun getA(): String{
+      return  "$content"
+    }
+}
+
+fun <T> getx(comment :T): T{
+    return comment
+}
+
+//Có thể viết fun <T> Int.xxx(): T?, nhưng nó không mang ý nghĩa thực tế, vì Int không có generic.
+//Chỉ List<T>, Set<T>, Map<K,V>, hoặc class/interface generic mới thật sự cần generic extension.
+
+
+
 
 
 
@@ -189,8 +286,30 @@ fun main(){
     queue()
     hashmap()
     mutable()
+
     val a = box("ssss")
     a.show()
+
+    println(identity(123))       // Int
+    println(identity("Hello"))   // String
+    println(identity(3.14))      // Double
+
+    val list = listOf(1,2,3)
+    println(list.secondOrNull()) // 2
+
+    val repo = userrepo()
+    repo.save("Alice")
+    repo.save("Bob")
+    println(repo.getAll()) // [Alice, Bob]
+
+    val success: Result<String> = Result.Success("Loaded data")
+    val error: Result<Int> = Result.Error("Network error")
+    val loading: Result<Any> = Result.Loading
+    println(success) // Success(data=Loaded data)
+    println(error)   // Error(message=Network error)
+    println(loading) // Loading
+
+
     val b = cut()
     b.e = -99
     println(b.e)
@@ -201,4 +320,10 @@ fun main(){
     val name = "Kotlin"
     println(name::class)
     all()
+    val n = listOf(1,2,3)
+    val m = n
+    print(m === n)
+
+
+
 }
