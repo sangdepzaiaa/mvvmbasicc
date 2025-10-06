@@ -8,11 +8,10 @@ import com.example.myapplication.data.model.Post
 
 
 @Dao
-interface PostDao {
-
+interface PostDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPosts(posts: List<Post>)
+    suspend fun insertPost(post: List<Post>)
 
     @Query("SELECT * FROM posts")
-    suspend fun getPosts(): List<Post>
+    suspend fun getList() : List<Post>
 }

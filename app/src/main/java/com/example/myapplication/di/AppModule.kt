@@ -15,42 +15,45 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.random.Random
 
+//"https://jsonplaceholder.typicode.com/"
 
-val appModule = module {
-
-    single {
+val appModule = module{
+    single{
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
         OkHttpClient.Builder()
             .addInterceptor(logging)
             .build()
-    }
 
+    }
     single {
         Retrofit.Builder()
             .baseUrl("https://jsonplaceholder.typicode.com/")
-            .client(get())
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .client(get())
             .build()
     }
-
-    single { get<Retrofit>().create(ApiService::class.java) }
-
+    single {
+        get<Retrofit>().create(ApiService::class.java)
+    }
     single {
         Room.databaseBuilder(
             androidContext(),
             AppDatabase::class.java,
-            "app_database"
-        ).build()
+            "db_database"
+        ).fallbackToDestructiveMigration().build()
     }
-
-    single { get<AppDatabase>().postDao() }
-
-    single { NetworkUtil(androidContext()) }
-
-    single { PostRepository(get(), get(), get()) }
-
+    single {
+        NetworkUtil(androidContext())
+    }
+    single {
+        get<AppDatabase>().postDao()
+    }
+    single {
+        PostRepository(get(),get(),get())
+    }
     viewModel { MainViewModel(get()) }
 }

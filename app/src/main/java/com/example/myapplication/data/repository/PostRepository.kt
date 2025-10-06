@@ -9,21 +9,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class PostRepository(
+    private val networkUtil: NetworkUtil,
     private val apiService: ApiService,
-    private val postDao: PostDao,
-    private val networkUtil: NetworkUtil
-) {
-    suspend fun getPosts(): List<Post> = withContext(Dispatchers.IO) {
-        if (networkUtil.isNetworkAvailable()) {
+    private val post: PostDao
+){
+    suspend fun getPosts() = withContext(Dispatchers.IO){
+        if (networkUtil.isNetworkAvailable()){
             try {
                 val posts = apiService.getPosts()
-                postDao.insertPosts(posts) // Lưu cache
-                posts // return từ API
-            } catch (e: Exception) {
-                postDao.getPosts() // return cache khi API fail
+                post.insertPost(posts)
+                return@withContext posts
+            }catch (e : Exception){
+                return@withContext  post.getList()
             }
-        } else {
-            postDao.getPosts() // return cache khi không có mạng
+        }else{
+            return@withContext post.getList()
         }
     }
 }

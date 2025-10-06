@@ -1,6 +1,7 @@
 package com.example.myapplication.ui
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -8,37 +9,59 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
+import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.ActivityMainBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainViewModel by inject()
-    private val adapter = PostAdapter()
+class MainActivity : AppCompatActivity(){
+    val binding by lazy(LazyThreadSafetyMode.NONE) {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    val postAdapter by lazy(LazyThreadSafetyMode.NONE){
+        PostAdapter()
+    }
+
+    val viewmodel: MainViewModel by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupRecyclerView()
-        observeViewModel()
-        viewModel.fetchPosts()
+        setupView()
+        bindVM()
+
     }
 
-    private fun setupRecyclerView() {
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = this@MainActivity.adapter
+    private fun setupView() {
+        binding.recyclerView.run {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            adapter = postAdapter
         }
+
+        postAdapter.onItemClick = { post ->
+            Toast.makeText(this, "Clicked ${post.title}", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
-    private fun observeViewModel() {
-        viewModel.posts.observe(this) { posts ->
-            adapter.submitList(posts)
+    private fun bindVM() {
+
+        viewmodel.post.observe(this,::render)
+
+        viewmodel.error.observe(this){error ->
+            error.let{
+                Toast.makeText(this,"error", Toast.LENGTH_SHORT).show()
+            }
         }
-        viewModel.error.observe(this) { error ->
-            error?.let { Toast.makeText(this, it, Toast.LENGTH_SHORT).show() }
-        }
+
+
     }
+    private fun render(posts: List<Post>) {
+
+        postAdapter.submitList(posts)
+    }
+
 }
