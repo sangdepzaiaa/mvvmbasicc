@@ -1,16 +1,15 @@
 package com.example.myapplication.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.example.myapplication.ui.editImage.EditImageActivity
+import com.example.myapplication.ui.editVideo.EditVideoActivity
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -20,6 +19,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.btnloadimage.setOnClickListener {
+            startActivity(Intent(this, EditImageActivity::class.java))
+        }
+
+        binding.btnloadvideo.setOnClickListener {
+            startActivity(Intent(this, EditVideoActivity::class.java))
+        }
 
         setupRecyclerView()
         observeViewModel()
@@ -34,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.posts.observe(this) { posts ->
+        viewModel.post.observe(this) { posts ->
             adapter.submitList(posts)
         }
         viewModel.error.observe(this) { error ->

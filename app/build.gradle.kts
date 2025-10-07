@@ -48,6 +48,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -95,6 +97,14 @@ dependencies {
     // DataStore
     implementation(libs.datastore.preferences)
     implementation(libs.datastore.core)
+
+    //Exoplayer
+
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui )
+//    implementation("com.google.android.exoplayer:exoplayer:2.20.1")
+//    implementation("com.google.android.exoplayer:exoplayer-ui:2.20.1")
+
 
 
 }

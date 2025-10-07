@@ -6,6 +6,38 @@ import com.example.myapplication.data.model.Post
 
 
 @Database(entities = [Post::class], version = 1)
-abstract class AppDatabase : RoomDatabase() {
+abstract class AppDatabase: RoomDatabase(){
     abstract fun postDao(): PostDao
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//@Database(entities = [Post::class], version = 1)
+//abstract class AppDatabase : RoomDatabase() {
+//    abstract fun postDao(): PostDao
+//}
+

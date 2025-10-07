@@ -1,9 +1,11 @@
 package com.example.myapplication.di
 
 
+import androidx.room.Database
 import androidx.room.Room
 import com.example.myapplication.data.local.AppDatabase
-import com.example.myapplication.data.network.ApiService
+import com.example.myapplication.data.local.PostDao
+import com.example.myapplication.data.remote.ApiService
 import com.example.myapplication.data.repository.PostRepository
 import com.example.myapplication.ui.MainViewModel
 import com.example.myapplication.util.NetworkUtil
@@ -17,8 +19,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-val appModule = module {
+//"https://jsonplaceholder.typicode.com/"
 
+
+val appModule = module{
     single {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -27,30 +31,31 @@ val appModule = module {
             .addInterceptor(logging)
             .build()
     }
-
     single {
         Retrofit.Builder()
             .baseUrl("https://jsonplaceholder.typicode.com/")
-            .client(get())
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .client(get())
             .build()
     }
-
-    single { get<Retrofit>().create(ApiService::class.java) }
-
+    single {
+        get<Retrofit>().create(ApiService::class.java)
+    }
     single {
         Room.databaseBuilder(
             androidContext(),
             AppDatabase::class.java,
-            "app_database"
+              "db_appdatabase"
         ).build()
     }
-
-    single { get<AppDatabase>().postDao() }
-
-    single { NetworkUtil(androidContext()) }
-
-    single { PostRepository(get(), get(), get()) }
-
+    single {
+        get<AppDatabase>().postDao()
+    }
+    single {
+        NetworkUtil(androidContext())
+    }
+    single {
+        PostRepository(get(),get(),get())
+    }
     viewModel { MainViewModel(get()) }
 }

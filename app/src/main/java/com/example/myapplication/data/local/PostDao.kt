@@ -6,13 +6,56 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.myapplication.data.model.Post
 
-
 @Dao
-interface PostDao {
-
+interface PostDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPosts(posts: List<Post>)
+    suspend fun insertPost(post: List<Post>)
 
     @Query("SELECT * FROM posts")
     suspend fun getPosts(): List<Post>
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//@Dao
+//interface PostDao {
+//
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun insertPosts(posts: List<Post>)
+//
+//    @Query("SELECT * FROM posts")
+//    suspend fun getPosts(): List<Post>
+//}
+

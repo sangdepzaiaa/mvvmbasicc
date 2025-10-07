@@ -5,39 +5,61 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.ItemPostBinding
 
 
-class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallback()) {
+class PostAdapter : ListAdapter<Post, PostAdapter.VH>(
+    callback()
+){
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        val binding = ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): PostAdapter.VH {
+        return VH(ItemPostBinding.inflate(LayoutInflater.from(parent.context ),parent,false))
     }
 
-    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PostAdapter.VH, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class PostViewHolder(private val binding: ItemPostBinding) :
-        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(post: Post) {
+
+    class VH(var binding: ItemPostBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(post: Post){
             binding.postTitle.text = post.title
             binding.postBody.text = post.body
-            Glide.with(binding.postImage.context)
-                .load("https://via.placeholder.com/50") // Placeholder image
-                .into(binding.postImage)
         }
+
     }
+
+    override fun getItemCount(): Int {
+        return currentList.size
+    }
+
+
 }
 
-class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
-    override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean =
-        oldItem.id == newItem.id
+class callback: DiffUtil.ItemCallback<Post>(){
+    override fun areItemsTheSame(
+        oldItem: Post,
+        newItem: Post
+    ): Boolean {
+        return oldItem.id == newItem.id
+    }
 
-    override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean =
-        oldItem == newItem
+    override fun areContentsTheSame(
+        oldItem: Post,
+        newItem: Post
+    ): Boolean {
+        return oldItem == newItem
+    }
+
 }
+
+
+
+
+
+

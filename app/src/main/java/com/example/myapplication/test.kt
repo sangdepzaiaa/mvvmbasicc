@@ -1,5 +1,6 @@
 package com.example.v205_ringtonemakermp3cutter_sandbox.base
 
+import android.R
 import java.util.LinkedList
 import java.util.Queue
 import java.util.Stack
@@ -7,12 +8,43 @@ import java.util.Stack
 
 fun abc(){
     val list = listOf(1,2,3,2)
+
+
+    val mutableList = mutableListOf(1, 2, 3)
+    mutableList.add(4)       // thêm phần tử
+    mutableList.remove(2)    // xóa phần tử
+    mutableList[0] = 10      // update phần tử
+    println(mutableList[1])  // truy cập
+    println(mutableList.size) // kích thước
+    // Duyệt
+    for (item in mutableList) println(item)
+    mutableList.forEach { println(it) }
+
+// Sắp xếp / lọc / map
+    val sorted = mutableList.sorted()
+    val filtered = mutableList.filter { it > 2 }
+    val doubled = mutableList.map { it * 2 }
+
     val l = list
+
     print(list)
 }
 
+
+
+
 fun set(){
     val set = setOf(1,2,3,3)
+    val mutableSet = mutableSetOf(1, 2, 3)
+
+    mutableSet.add(4)          // thêm
+    mutableSet.remove(2)       // xóa
+    println(mutableSet.contains(3))  // kiểm tra tồn tại
+
+// Duyệt
+    for (item in mutableSet) println(item)
+    mutableSet.forEach { println(it) }
+
     print(set)
 }
 
@@ -26,7 +58,10 @@ fun stack(){
     stack.push(2)
     stack.push(5)
     stack.push(6)
-    print(stack.pop())
+    println(stack.pop())   // lấy ra phần tử trên cùng và xóa 2
+    println(stack.peek())  // lấy phần tử trên cùng nhưng không xóa
+    println(stack.isEmpty())
+    stack.forEach { println(it) }
 }
 
 fun queue(){
@@ -35,6 +70,7 @@ fun queue(){
     queue.add(3)
     queue.add(4)
     println(queue.remove())
+    println(queue.isEmpty())
 }
 
 fun hashmap(){
@@ -42,6 +78,20 @@ fun hashmap(){
     hashMap["ss"] = 3
     hashMap["ssa"] = 9
     println(hashMap["ss"])
+
+    val hashMap2 = hashMapOf("x" to 10, "y" to 20)
+    hashMap["z"] = 30        // thêm key-value
+    hashMap.remove("x")      // xóa
+    println(hashMap["y"])    // truy xuất
+    println(hashMap.containsKey("z"))  // kiểm tra key
+    println(hashMap.containsValue(20)) // kiểm tra value
+
+// Duyệt
+    for ((key, value) in hashMap) {
+        println("$key -> $value")
+    }
+    hashMap.forEach { k, v -> println("$k -> $v") }
+
 }
 
 fun mutable(){
@@ -273,7 +323,9 @@ fun <T> getx(comment :T): T{
 //Có thể viết fun <T> Int.xxx(): T?, nhưng nó không mang ý nghĩa thực tế, vì Int không có generic.
 //Chỉ List<T>, Set<T>, Map<K,V>, hoặc class/interface generic mới thật sự cần generic extension.
 
-
+fun String.tohas(): String{
+    return "$this + cncnc"
+}
 
 
 
@@ -324,6 +376,9 @@ fun main(){
     val m = n
     print(m === n)
 
+
+    var k = "sss"
+    println(k.tohas())
 
 
 }
