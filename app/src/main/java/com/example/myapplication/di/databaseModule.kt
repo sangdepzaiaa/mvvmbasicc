@@ -13,7 +13,7 @@ val databaseModule = module {
             androidContext(),
             AppDatabase::class.java,
             "db_database"
-        ).fallbackToDestructiveMigration()
+        ).fallbackToDestructiveMigration()  //tự động xoá db nếu version tăng
             .build()
     }
 

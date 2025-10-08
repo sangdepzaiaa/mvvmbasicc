@@ -11,10 +11,47 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <nl.dionsegijn.konfetti.xml.KonfettiView
+        android:id="@+id/konfettiView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:clickable="false"
+        android:focusable="false" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="28dp"
+        android:stateListAnimator="@null"
+        app:backgroundTint="@color/white"
+        style="@style/Widget.Telegram.FAB"
+        app:borderWidth="0dp"
+        app:elevation="8dp"
+        app:fabSize="normal"
+        app:pressedTranslationZ="12dp"
+        app:rippleColor="#22000000"
+        app:srcCompat="@drawable/save"
+        app:tint="@color/text_secondary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:useCompatPadding="true"
+        tools:ignore="VectorDrawableCompat" />
+
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

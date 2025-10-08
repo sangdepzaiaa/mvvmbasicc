@@ -95,4 +95,8 @@ dependencies {
     // DataStore
     implementation(libs.datastore.preferences)
     implementation(libs.datastore.core)
+
+    implementation("nl.dionsegijn:konfetti-xml:2.0.2")
+
+
 }

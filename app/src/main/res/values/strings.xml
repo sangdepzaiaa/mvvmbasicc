@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="user_name">User name</string>
+    <string name="this_is_the_last_message_preview">This is the last message preview</string>
+    <string name="title">title</string>
+    <string name="body">body</string>
+    <string name="save">save</string>
+    <string name="delete">delete</string>
+    <string name="title_body_no_empty">Title , Body không được để trống</string>
+
 </resources>

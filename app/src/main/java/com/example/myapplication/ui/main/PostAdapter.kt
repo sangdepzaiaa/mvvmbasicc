@@ -7,32 +7,34 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.ItemPostBinding
+import com.example.myapplication.extension.extension.loadCircleImage
 
-class PostAdapter() : ListAdapter<Post, PostAdapter.VH>(callback){
+class PostAdapter : ListAdapter<Post, PostAdapter.VH>(callback){
 
     lateinit var onItemClick: (Post) -> Unit
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): PostAdapter.VH {
+    ): VH {
         return VH(ItemPostBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
     inner class VH(var binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(post: Post){
+        fun bind(post: Post,onItemClick: (Post) -> Unit){
             binding.run {
                 postTitle.text = post.title
                 postBody.text = post.body
                 root.setOnClickListener {
                     onItemClick(post)
                 }
+                postImage.loadCircleImage("https://i.pravatar.cc/150?img=${post.id}")
             }
         }
     }
 
 
-    override fun onBindViewHolder(holder: PostAdapter.VH, position: Int) {
-        holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: VH, position: Int) {
+        holder.bind(getItem(position), onItemClick)
     }
 
 

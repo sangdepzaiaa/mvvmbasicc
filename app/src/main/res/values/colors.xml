@@ -2,4 +2,21 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="color_FFFFFF_60">#CCFFFFFF</color>
+    <color name="color_000000_10">#1A000000</color>
+
+>
+    <color name="teal_700">#018786</color>
+    <color name="teal_500">#009688</color>
+    <color name="teal_200">#80CBC4</color>
+    <color name="amber_500">#000000</color>
+    <color name="amber_700">#FFA000</color>
+    <color name="background_light">#FAFAFA</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#CC757575</color>
+    <color name="ripple_teal">#99E0F2</color>
+    <color name="telegram_blue">#2AABEE</color>
+    <color name="telegram_blue_light">#66C8F6</color>
+    <color name="color_EE5300">#EE5300</color>
+
 </resources>
