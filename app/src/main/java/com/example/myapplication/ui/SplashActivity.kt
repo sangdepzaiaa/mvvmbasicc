@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SplashActivity : AppCompatActivity(){
-    private val binding by lazy(LazyThreadSafetyMode.NONE) {
+    private val binding by lazy {
         ActivitySplashBinding.inflate(layoutInflater)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
