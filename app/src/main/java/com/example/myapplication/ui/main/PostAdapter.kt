@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.ItemPostBinding
 
-class PostAdapter() : ListAdapter<Post, PostAdapter.VH>(callback()){
+class PostAdapter() : ListAdapter<Post, PostAdapter.VH>(callback){
 
     lateinit var onItemClick: (Post) -> Unit
 
@@ -43,7 +43,7 @@ class PostAdapter() : ListAdapter<Post, PostAdapter.VH>(callback()){
 
 }
 
-class callback : DiffUtil.ItemCallback<Post>(){
+object callback : DiffUtil.ItemCallback<Post>(){
     override fun areItemsTheSame(
         oldItem: Post,
         newItem: Post

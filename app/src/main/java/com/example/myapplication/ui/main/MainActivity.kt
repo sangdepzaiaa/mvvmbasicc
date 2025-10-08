@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.ActivityMainBinding
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : AppCompatActivity(){
@@ -16,7 +17,8 @@ class MainActivity : AppCompatActivity(){
     val postAdapter by lazy(LazyThreadSafetyMode.NONE){
         PostAdapter()
     }
-    val viewmodel: MainViewModel by inject()
+    private val viewmodel: MainViewModel by viewModel()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +29,6 @@ class MainActivity : AppCompatActivity(){
 
     private fun setupView() {
         binding.recyclerView.run {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context)
             adapter = postAdapter
         }
         postAdapter.onItemClick = { post ->

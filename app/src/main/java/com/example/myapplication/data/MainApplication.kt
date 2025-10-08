@@ -1,7 +1,11 @@
 package com.example.myapplication.data
 
 import android.app.Application
-import com.example.myapplication.di.appModule
+import com.example.myapplication.di.databaseModule
+import com.example.myapplication.di.networkModule
+import com.example.myapplication.di.repositoryModule
+import com.example.myapplication.di.utilModule
+import com.example.myapplication.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -10,7 +14,13 @@ class MainApplication: Application(){
         super.onCreate()
         startKoin {
             androidContext(this@MainApplication)
-            modules(appModule)
+            modules( listOf(
+                networkModule,
+                databaseModule,
+                utilModule,
+                repositoryModule,
+                viewModelModule
+            ))
         }
     }
 }

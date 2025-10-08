@@ -22,12 +22,14 @@ class MainViewModel(private val repository: PostRepository): ViewModel(){
     fun fetchPosts(){
         viewModelScope.launch {
             try {
-                _post.value = repository.getPosts()
+                val posts = repository.getPosts()
+                _post.postValue(posts)
 
             }catch (e : Exception){
-                _error.value = "error"
-                _post.value = repository.getPosts()
+                _error.postValue("Error: ${e.message}")
             }
         }
     }
+//    Nếu không chắc thread, dùng postValue(dùng được mọi thred)
+//    Nếu chắc chắn đang main thread và muốn update ngay, dùng value.(chỉ main thread)
 }

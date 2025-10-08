@@ -15,16 +15,19 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-val appModule = module{
-    single{
+val networkModule = module {
+
+    // OkHttp
+    single {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
         OkHttpClient.Builder()
             .addInterceptor(logging)
             .build()
-
     }
+
+    // Retrofit
     single {
         Retrofit.Builder()
             .baseUrl("https://jsonplaceholder.typicode.com/")
@@ -32,24 +35,9 @@ val appModule = module{
             .client(get())
             .build()
     }
+
+    // ApiService
     single {
         get<Retrofit>().create(ApiService::class.java)
     }
-    single {
-        Room.databaseBuilder(
-            androidContext(),
-            AppDatabase::class.java,
-            "db_database"
-        ).fallbackToDestructiveMigration().build()
-    }
-    single {
-        NetworkUtil(androidContext())
-    }
-    single {
-        get<AppDatabase>().postDao()
-    }
-    single {
-        PostRepository(get(), get(), get())
-    }
-    viewModel { MainViewModel(get()) }
 }
