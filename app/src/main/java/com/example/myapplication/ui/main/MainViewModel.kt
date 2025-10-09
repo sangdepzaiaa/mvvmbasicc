@@ -47,7 +47,6 @@ class MainViewModel(private val repository: PostRepository): ViewModel(){
         }
     }
 
-
     fun updatePost(post: Post, title: String, body: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val updatedPost = post.copy(title = title, body = body)
