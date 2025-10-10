@@ -10,17 +10,17 @@ import com.example.myapplication.databinding.ItemPostBinding
 import com.example.myapplication.extension.ExtImg.loadCircleImage
 
 
-class PostAdapter : ListAdapter<Post, PostAdapter.postViewHoler>(callback){
+class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHoler>(Callback){
 
     lateinit var onItemClick: (Post) -> Unit
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): postViewHoler {
-        return postViewHoler(ItemPostBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+    ): PostViewHoler {
+        return PostViewHoler(ItemPostBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
-     class postViewHoler(var binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
+     class PostViewHoler(var binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post,onItemClick: (Post) -> Unit){
             binding.run {
                 postTitle.text = post.title
@@ -38,7 +38,7 @@ class PostAdapter : ListAdapter<Post, PostAdapter.postViewHoler>(callback){
     }
 
 
-    override fun onBindViewHolder(holder: postViewHoler, position: Int) {
+    override fun onBindViewHolder(holder: PostViewHoler, position: Int) {
         holder.bind(getItem(position), onItemClick)
     }
 
@@ -50,7 +50,7 @@ class PostAdapter : ListAdapter<Post, PostAdapter.postViewHoler>(callback){
 
 }
 
-object callback : DiffUtil.ItemCallback<Post>(){
+object Callback : DiffUtil.ItemCallback<Post>(){
     override fun areItemsTheSame(
         oldItem: Post,
         newItem: Post
