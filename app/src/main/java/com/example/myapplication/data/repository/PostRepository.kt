@@ -21,9 +21,10 @@ class PostRepository(
 
     fun searchPosts(keyword: String): Flow<List<Post>> {
         val clean = keyword.trim()
-        return if (clean.isBlank()) postDao.getAllPosts()
+        return if (clean.isBlank()) postDao.getAllPosts() // trả list ban đầu
         else postDao.searchPosts(clean)
     }
+
 
     suspend fun insertPost(post: Post) = withContext(Dispatchers.IO) { postDao.insertPost(post) }
     suspend fun insertPosts(posts: List<Post>) = withContext(Dispatchers.IO) { postDao.insertPosts(posts) }

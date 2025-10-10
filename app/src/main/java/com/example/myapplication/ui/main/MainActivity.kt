@@ -94,25 +94,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupSearch() {
-        // EditText listener
+        // Cập nhật query khi user gõ
         binding.searchEditText.addTextChangedListener { editable ->
             viewModel.onSearchChanged(editable.toString())
         }
 
-        // Collect searchResults an toàn theo lifecycle
+        // Collect Flow realtime searchResults
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.searchResults.collect { posts ->
-                    postAdapter.submitList(posts)
+                    postAdapter.submitList(posts) {
+                        // Khi xóa hết chữ, scroll lên top
+                        if (binding.searchEditText.text.isNullOrEmpty() && posts.isNotEmpty()) {
+                            binding.recyclerView.scrollToPosition(0)
+                        }
+                    }
                 }
             }
         }
     }
 
     private fun bindViewModel() {
-
-
-        // Observe error LiveData
+        // Observe chỉ error
         viewModel.error.observe(this) { error ->
             error?.let {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()

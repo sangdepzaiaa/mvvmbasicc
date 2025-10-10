@@ -25,8 +25,11 @@ class MainViewModel(private val repository: PostRepository) : ViewModel() {
     // Search Flow realtime kiểu YouTube
     val searchResults: StateFlow<List<Post>> = _searchQuery
         .debounce(300)
-        .flatMapLatest { repository.searchPosts(it) }
+        .flatMapLatest { keyword ->
+            repository.searchPosts(keyword) // repository trả tất cả posts nếu keyword blank
+        }
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
@@ -35,13 +38,13 @@ class MainViewModel(private val repository: PostRepository) : ViewModel() {
         _searchQuery.value = query
     }
 
-    fun addPost(post: Post) = viewModelScope.launch { repository.insertPost(post) }
-    fun updatePost(post: Post) = viewModelScope.launch { repository.updatePost(post) }
-    fun deletePost(post: Post) = viewModelScope.launch { repository.deletePost(post) }
+    fun addPost(post: Post) = viewModelScope.launch(Dispatchers.IO) { repository.insertPost(post) }
+    fun updatePost(post: Post) = viewModelScope.launch(Dispatchers.IO) { repository.updatePost(post) }
+    fun deletePost(post: Post) = viewModelScope.launch(Dispatchers.IO) { repository.deletePost(post) }
 
     init {
         // Fetch API lần đầu, nếu fail → cập nhật error
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 repository.fetchPostsFromApi()
             } catch (e: Exception) {
