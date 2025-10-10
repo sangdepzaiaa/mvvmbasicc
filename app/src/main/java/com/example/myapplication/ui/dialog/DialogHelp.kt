@@ -3,10 +3,10 @@ package com.example.myapplication.ui.dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.Toast
-import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.LayoutBottomSheetPostBinding
+import com.example.myapplication.extension.ExtImg.loadCircleImage
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 object DialogHelp {
@@ -15,10 +15,8 @@ object DialogHelp {
         val dialog = BottomSheetDialog(context)
         dialog.setContentView(binding.root)
 
-        Glide.with(context)
-            .load("https://randomuser.me/api/portraits/women/${post?.id ?: 12}.jpg")
-            .circleCrop()
-            .into(binding.imgAvatar)
+        binding.imgAvatar.loadCircleImage("https://example.com/avatar.jp")
+
 
         post?.let {
             binding.run {

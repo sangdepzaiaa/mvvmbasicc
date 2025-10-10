@@ -4,7 +4,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 
-object extImg {
+object ExtImg {
     fun ImageView.loadCircleImage(url: String) {
         Glide.with(this.context)
             .load(url)

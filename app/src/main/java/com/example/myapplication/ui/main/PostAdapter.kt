@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.ItemPostBinding
-import com.example.myapplication.extension.extImg.loadCircleImage
+import com.example.myapplication.extension.ExtImg.loadCircleImage
+
 
 class PostAdapter : ListAdapter<Post, PostAdapter.postViewHoler>(callback){
 
