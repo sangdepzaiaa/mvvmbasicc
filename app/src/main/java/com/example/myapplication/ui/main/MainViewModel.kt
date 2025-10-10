@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.main
 
+import android.R
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,58 +8,67 @@ import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.data.repository.PostRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: PostRepository): ViewModel(){
-    private val _post = MutableLiveData<List<Post>>()
-    val post : LiveData<List<Post>> get() = _post
 
+    // LiveData trực tiếp từ Room → UI tự update
+    val post: LiveData<List<Post>> = repository.getPostsLive()
     private val _error = MutableLiveData<String>()
-    val error : LiveData<String> get() = _error
+    val error: LiveData<String> = _error
+
+    private val _searchQuery = MutableStateFlow("") // lưu từ khóa
+    val searchQuery = _searchQuery.asStateFlow()
 
     init {
-        fetchPosts()
-    }
-
-    fun fetchPosts(){
         viewModelScope.launch {
             try {
-                val posts = repository.getPosts()
-                _post.postValue(posts)
-
-            }catch (e : Exception){
+                repository.fetchPostsFromApi() // lần đầu lấy API vào Room
+            } catch (e: Exception) {
                 _error.postValue("Error: ${e.message}")
             }
         }
     }
-//    Nếu không chắc thread, dùng postValue(dùng được mọi thred)
-//    Nếu chắc chắn đang main thread và muốn update ngay, dùng value.(chỉ main thread)
 
-
-    fun addPost(title: String, body: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val id = (_post.value?.maxOfOrNull { it.id } ?: 0) + 1
-            val newPost = Post(id, title, body)
-            repository.insertPosts(listOf(newPost))
-
-            // Cập nhật lại danh sách
-            val updatedList = _post.value.orEmpty() + newPost
-            _post.postValue(updatedList) // an toàn trên background thread
+    fun addPost(post: Post) {
+        viewModelScope.launch {
+            repository.insertPost(post)
+            // Không cần fetch lại → LiveData tự notify
         }
     }
 
-    fun updatePost(post: Post, title: String, body: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val updatedPost = post.copy(title = title, body = body)
-            repository.insertPosts(listOf(updatedPost)) // REPLACE strategy
-            fetchPosts()
+    fun updatePost(post: Post) {
+        viewModelScope.launch {
+            repository.updatePost(post)
+            // LiveData tự notify
         }
     }
 
     fun deletePost(post: Post) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             repository.deletePost(post)
-            fetchPosts()
+            // LiveData tự notify
         }
     }
+
+
+    // Dòng dữ liệu realtime theo từ khóa
+    val searchResults = searchQuery
+        .debounce(300) // chờ người dùng gõ xong 300ms
+        .flatMapLatest { keyword ->
+            if (keyword.isBlank()) repository.searchPosts("") // hoặc repository.getAllPosts()
+            else repository.searchPosts(keyword)
+        }
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
+    fun onSearchChanged(newQuery: String) {
+        _searchQuery.value = newQuery
+    }
+
 }

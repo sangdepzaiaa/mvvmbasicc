@@ -8,9 +8,7 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.LayoutBottomSheetPostBinding
-import com.example.myapplication.extension.extension.loadCircleImage
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlin.random.Random
 
 object dialog_help {
     fun showPostPopup(context: Context, post: Post?, onSave: (title: String, body: String) -> Unit, onDelete: (() -> Unit)? = null) {
@@ -19,7 +17,7 @@ object dialog_help {
         dialog.setContentView(binding.root)
 
         Glide.with(context)
-            .load("https://i.pravatar.cc/150?img=${post?.id ?: 1}")
+            .load("https://randomuser.me/api/portraits/women/${post?.id ?: 12}.jpg")
             .circleCrop()
             .into(binding.imgAvatar)
 
@@ -27,13 +25,13 @@ object dialog_help {
             binding.run {
                 etTitle.setText(it.title)
                 etBody.setText(it.body)
-                btnDelete.visibility = View.VISIBLE
             }
         }
 
         binding.btnSave.setOnClickListener {
             val title = binding.etTitle.text.toString().trim()
             val body = binding.etBody.text.toString().trim()
+
             if (title.isNotEmpty() && body.isNotEmpty()) {
                 onSave(title, body)
                 dialog.dismiss()

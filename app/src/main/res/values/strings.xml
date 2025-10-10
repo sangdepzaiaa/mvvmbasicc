@@ -3,9 +3,11 @@
     <string name="user_name">User name</string>
     <string name="this_is_the_last_message_preview">This is the last message preview</string>
     <string name="title">title</string>
+    <string name="id">id</string>
     <string name="body">body</string>
     <string name="save">save</string>
     <string name="delete">delete</string>
     <string name="title_body_no_empty">Title , Body không được để trống</string>
+    <string name="searchtext">Tìm kiếm bài viết...</string>
 
 </resources>

@@ -7,17 +7,50 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
+
+    <!-- 🔍 Icon tìm kiếm -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgSearch"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_search_premium"
+        android:tint="#666"
+        app:layout_constraintTop_toTopOf="@+id/searchEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/searchEditText"
+
+       />
+
+    <!-- 📝 Ô nhập tìm kiếm -->
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/searchEditText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:hint="@string/searchtext"
+        android:background="@drawable/bg_search_box"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textSize="16sp"
+        android:singleLine="true"
+        android:imeOptions="actionSearch"
+        android:textColor="#000"
+        android:textColorHint="#999"
+        app:layout_constraintStart_toEndOf="@+id/imgSearch"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 📋 Danh sách bài viết -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintTop_toBottomOf="@+id/searchEditText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <nl.dionsegijn.konfetti.xml.KonfettiView
         android:id="@+id/konfettiView"

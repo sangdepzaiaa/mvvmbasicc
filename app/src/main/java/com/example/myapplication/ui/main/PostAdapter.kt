@@ -27,7 +27,11 @@ class PostAdapter : ListAdapter<Post, PostAdapter.VH>(callback){
                 root.setOnClickListener {
                     onItemClick(post)
                 }
-                postImage.loadCircleImage("https://i.pravatar.cc/150?img=${post.id}")
+
+                postImage.loadCircleImage(
+                    "https://randomuser.me/api/portraits/women/${post.id % 100}.jpg"
+                )
+
             }
         }
     }
