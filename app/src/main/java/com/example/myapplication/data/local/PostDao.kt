@@ -17,18 +17,16 @@ interface PostDao{
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPosts(posts: List<Post>)
-
-    @Query("SELECT * FROM posts")
-    fun getPosts(): LiveData<List<Post>>
-
     @Update
     suspend fun updatePost(post: Post)
 
     @Delete
     suspend fun deletePost(post: Post)
 
-
-    @Query("SELECT * FROM posts WHERE title LIKE '%' || :keyword || '%' OR body LIKE '%' || :keyword || '%' ORDER BY id DESC")
+    @Query("SELECT * FROM posts WHERE title LIKE '%' || :keyword || '%' OR body LIKE '%' || :keyword || '%' ")
     fun searchPosts(keyword: String): Flow<List<Post>>
+
+    @Query("SELECT * FROM posts")
+    fun getAllPosts(): Flow<List<Post>>
 
 }

@@ -1,6 +1,7 @@
 package com.example.myapplication.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import com.example.myapplication.data.local.PostDao
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.data.remote.ApiService
@@ -16,32 +17,27 @@ class PostRepository(
 ){
 
 
-    // LiveData trực tiếp từ Room
-    fun getPostsLive(): LiveData<List<Post>> = postDao.getPosts()
+    fun getPostsLive(): LiveData<List<Post>> = postDao.getAllPosts().asLiveData()
 
-    suspend fun insertPost(post: Post) = withContext(Dispatchers.IO) {
-        postDao.insertPost(post)
+    fun searchPosts(keyword: String): Flow<List<Post>> {
+        val clean = keyword.trim()
+        return if (clean.isBlank()) postDao.getAllPosts()
+        else postDao.searchPosts(clean)
     }
 
-    suspend fun updatePost(post: Post) = withContext(Dispatchers.IO) {
-        postDao.updatePost(post)
-    }
+    suspend fun insertPost(post: Post) = withContext(Dispatchers.IO) { postDao.insertPost(post) }
+    suspend fun insertPosts(posts: List<Post>) = withContext(Dispatchers.IO) { postDao.insertPosts(posts) }
+    suspend fun updatePost(post: Post) = withContext(Dispatchers.IO) { postDao.updatePost(post) }
+    suspend fun deletePost(post: Post) = withContext(Dispatchers.IO) { postDao.deletePost(post) }
 
-    suspend fun deletePost(post: Post) = withContext(Dispatchers.IO) {
-        postDao.deletePost(post)
-    }
-
-    fun searchPosts(keyword: String): Flow<List<Post>> =postDao.searchPosts(keyword)
-
-    // Tuỳ chọn: fetch API + cache vào Room lần đầu
-    suspend fun fetchPostsFromApi() {
-        if (networkUtil.isNetworkAvailable()) {
-            try {
-                val posts = apiService.getPosts()
-                postDao.insertPosts(posts)
-            } catch (e: Exception) {
-                // API lỗi → giữ cache Room
-            }
+    suspend fun fetchPostsFromApi(): List<Post> = withContext(Dispatchers.IO) {
+        if (!networkUtil.isNetworkAvailable()) return@withContext emptyList()
+        return@withContext try {
+            val posts = apiService.getPosts()
+            postDao.insertPosts(posts)
+            posts
+        } catch (e: Exception) {
+            emptyList()
         }
     }
 }

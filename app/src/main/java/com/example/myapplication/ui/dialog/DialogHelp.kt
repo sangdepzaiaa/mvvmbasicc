@@ -2,7 +2,6 @@ package com.example.myapplication.ui.dialog
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
@@ -10,7 +9,7 @@ import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.LayoutBottomSheetPostBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-object dialog_help {
+object DialogHelp {
     fun showPostPopup(context: Context, post: Post?, onSave: (title: String, body: String) -> Unit, onDelete: (() -> Unit)? = null) {
         val binding = LayoutBottomSheetPostBinding.inflate(LayoutInflater.from(context))
         val dialog = BottomSheetDialog(context)

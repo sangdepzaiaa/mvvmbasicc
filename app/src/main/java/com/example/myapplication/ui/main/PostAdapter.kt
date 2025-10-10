@@ -7,19 +7,19 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.ItemPostBinding
-import com.example.myapplication.extension.extension.loadCircleImage
+import com.example.myapplication.extension.extImg.loadCircleImage
 
-class PostAdapter : ListAdapter<Post, PostAdapter.VH>(callback){
+class PostAdapter : ListAdapter<Post, PostAdapter.postViewHoler>(callback){
 
     lateinit var onItemClick: (Post) -> Unit
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): VH {
-        return VH(ItemPostBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+    ): postViewHoler {
+        return postViewHoler(ItemPostBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
-    inner class VH(var binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
+     class postViewHoler(var binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post,onItemClick: (Post) -> Unit){
             binding.run {
                 postTitle.text = post.title
@@ -29,7 +29,7 @@ class PostAdapter : ListAdapter<Post, PostAdapter.VH>(callback){
                 }
 
                 postImage.loadCircleImage(
-                    "https://randomuser.me/api/portraits/women/${post.id % 100}.jpg"
+                    "https://randomuser.me/api/portraits/men/${post.id % 100}.jpg"
                 )
 
             }
@@ -37,7 +37,7 @@ class PostAdapter : ListAdapter<Post, PostAdapter.VH>(callback){
     }
 
 
-    override fun onBindViewHolder(holder: VH, position: Int) {
+    override fun onBindViewHolder(holder: postViewHoler, position: Int) {
         holder.bind(getItem(position), onItemClick)
     }
 

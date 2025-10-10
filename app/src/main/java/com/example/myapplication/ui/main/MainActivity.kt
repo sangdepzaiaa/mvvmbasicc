@@ -2,19 +2,20 @@ package com.example.myapplication.ui.main
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.ActivityMainBinding
-import com.example.myapplication.extension.extension.loadCircleImage
-import com.example.myapplication.ui.dialog.dialog_help.showPostPopup
+import com.example.myapplication.ui.dialog.DialogHelp.showPostPopup
+import kotlinx.coroutines.launch
 import nl.dionsegijn.konfetti.core.PartyFactory
 import nl.dionsegijn.konfetti.core.Position
 import nl.dionsegijn.konfetti.core.emitter.Emitter
@@ -22,7 +23,6 @@ import nl.dionsegijn.konfetti.core.models.Shape
 import nl.dionsegijn.konfetti.core.models.Size
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
-import kotlin.math.log
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,23 +35,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setupRecyclerView()
-        setupSearch()
         setupFab()
         bindViewModel()
+        setupSearch()
     }
 
-    private fun setupSearch() {
-        binding.searchEditText.addTextChangedListener { editable ->
-            viewModel.onSearchChanged(editable.toString())
-        }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.searchResults.collect { posts ->
-                postAdapter.submitList(posts)
-            }
-        }
 
-    }
 
     private fun setupRecyclerView() {
         binding.recyclerView.adapter = postAdapter
@@ -103,17 +93,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun bindViewModel() {
-        viewModel.post.observe(this) { posts ->
-            postAdapter.submitList(posts)
+    private fun setupSearch() {
+        // EditText listener
+        binding.searchEditText.addTextChangedListener { editable ->
+            viewModel.onSearchChanged(editable.toString())
         }
 
+        // Collect searchResults an toàn theo lifecycle
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.searchResults.collect { posts ->
+                    postAdapter.submitList(posts)
+                }
+            }
+        }
+    }
+
+    private fun bindViewModel() {
+
+
+        // Observe error LiveData
         viewModel.error.observe(this) { error ->
             error?.let {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
     }
+
 
     private fun showKonfetti(fab: View) {
         val location = IntArray(2)
