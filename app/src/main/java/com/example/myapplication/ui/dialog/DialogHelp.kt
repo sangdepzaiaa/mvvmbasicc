@@ -15,7 +15,7 @@ object DialogHelp {
         val dialog = BottomSheetDialog(context)
         dialog.setContentView(binding.root)
 
-        binding.imgAvatar.loadCircleImage("https://example.com/avatar.jp")
+        binding.imgAvatar.loadCircleImage("https://example.com/avatar.jpg")
 
 
         post?.let {

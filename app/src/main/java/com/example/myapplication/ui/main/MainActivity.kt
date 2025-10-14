@@ -10,6 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.model.Post
@@ -104,14 +105,18 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.searchResults.collect { posts ->
                     postAdapter.submitList(posts) {
-                        // Khi xóa hết chữ, scroll lên top
-                        if (binding.searchEditText.text.isNullOrEmpty() && posts.isNotEmpty()) {
-                            binding.recyclerView.scrollToPosition(0)
-                        }
+                        binding.recyclerView.postDelayed({
+                            if (binding.searchEditText.text.isNullOrEmpty() && posts.isNotEmpty()) {
+                                (binding.recyclerView.layoutManager as? LinearLayoutManager)
+                                    ?.scrollToPositionWithOffset(0, 0)
+                            }
+                        }, 500) // đợi 100ms để text update
                     }
+
                 }
             }
         }
+
     }
 
     private fun bindViewModel() {
