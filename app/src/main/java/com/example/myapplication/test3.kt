@@ -161,6 +161,7 @@ class Roo(){
            is Result.getData -> print("${result.title}")
            is Result.setData -> print("${result.content}")
            is Result.Loading -> print("loading... ")
+            else -> "sss"
         }
     }
 }
@@ -194,8 +195,13 @@ fun mainn() {
     print(u2 === u3 )
 }
 
+//Lambda là biến nên truyền vô được hof, còn fun chỉ là định nghĩa, phải :: để biến nó thành một giá trị (biến hàm) mới truyền được.
 fun highFun( a:Int,  b : (Int) -> Int ): Int{
     return b(a)
+}
+
+fun double(x:Int):Int{
+    return x*x*2
 }
 
 fun String.toStringger(): String{
@@ -252,17 +258,17 @@ data class Person(var name: String,var age: Int)
 
 fun scopeFun(){
     var person = Person("sang",18)
-    person.let {
+    person.let { // let trả về giá trị của biểu thức cuoi cùng,Truy cập object bằng it,Xử lý nullable
         println("person exit")
         it
-    }.run {
+    }.run {  // run trả về giá trị của biểu thức cuoi cùng,Truy cập property trực tiếp (this),Viết gọn, rõ ràng khi trong class
         name = "ff"
         age = age + 9
         this
-    }.also {
+    }.also {  //  also trả về object, dùng để log,..
         println("${it.name} + ${it.age}")
         it
-    }.apply {
+    }.apply {  // apply trả về object, thay đổi giá trị thuộc tính object
         name = "ssss"
         age = age + 99
         this
@@ -270,8 +276,7 @@ fun scopeFun(){
         println("${it.name} + ${it.age}")
         it
     }.also { p ->
-        with(p){
-            name = "asd"
+        with(p){ //with trả về giá trị của biểu thức cuoi cùng, phải truyền object vaoif
             age = age +8888
             this
         }
@@ -326,8 +331,7 @@ fun main(){
 
     mainn()
 
-    var result = {x:Int ->  x*x}
-    println(highFun(2,result))
+
 
     var name = "sang"
     println(name.toStringger())
@@ -338,6 +342,10 @@ fun main(){
     Hp()
 
     scopeFun()
+
+    var result = {x:Int ->  x*x}
+    println(highFun(2,result))
+    println(highFun(2,::double))
 
 
 }
