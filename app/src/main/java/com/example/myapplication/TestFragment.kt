@@ -10,23 +10,21 @@ import android.view.ViewGroup
 import com.example.myapplication.databinding.FragmentTestBinding
 
 
-class TestFragment : Fragment() {
-    companion object {
+class TestFragment : Fragment(){
+    companion object{
         const val TAGG = "TAGG"
     }
-    private var _binding: FragmentTestBinding? = null
-    private val binding get() = _binding
 
+    var _binding : FragmentTestBinding?=null
+    val binding get() = _binding
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
-        Log.d(TAGG, "onAttach")
+        Log.d(TAGG,"onAttach")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAGG, "onCreate")
-
+        Log.d(TAGG,"onCreate")
     }
 
     override fun onCreateView(
@@ -34,50 +32,58 @@ class TestFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAGG, "onCreateView")
-        _binding = FragmentTestBinding.inflate(inflater, container, false)
+        Log.d(TAGG,"onCreateView")
+        _binding = FragmentTestBinding.inflate(inflater,container,false)
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAGG, "onViewCreated")
-        binding?.tvtitlee?.text = "Hello from TestFragment!"
+        Log.d(TAGG,"onViewCreated")
+        binding?.tvtitlee?.text  = "fragment have done"
     }
 
     override fun onStart() {
+
         super.onStart()
-        Log.d(TAGG, "onStart")
+        Log.d(TAGG,"onStart")
     }
 
     override fun onResume() {
+
         super.onResume()
-        Log.d(TAGG, "onResume")
+        Log.d(TAGG,"onResume")
     }
 
     override fun onPause() {
+
         super.onPause()
         Log.d(TAGG, "onPause")
     }
 
+
     override fun onStop() {
+
         super.onStop()
-        Log.d(TAGG, "onStop")
+        Log.d(TAGG,"onStop")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d(TAGG, "onDestroyView")
+        Log.d(TAGG,"onDestroyView")
         _binding = null
+
     }
 
     override fun onDestroy() {
+
         super.onDestroy()
-        Log.d(TAGG, "onDestroy")
+        Log.d(TAGG,"onDestroy")
     }
 
     override fun onDetach() {
+
         super.onDetach()
-        Log.d(TAGG, "onDetach")
+        Log.d(TAGG,"onDetach")
     }
 }

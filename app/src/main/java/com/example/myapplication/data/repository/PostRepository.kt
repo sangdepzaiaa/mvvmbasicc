@@ -15,27 +15,20 @@ class PostRepository(
     private val apiService: ApiService,
     private val postDao: PostDao
 ){
+    val allPosts: Flow<List<Post>> = postDao.getAllPosts()
+    suspend fun insertPost(post: Post) =  postDao.insertPost(post)
+    suspend fun insertPosts(posts: List<Post>) =  postDao.insertPosts(posts)
+    suspend fun updatePost(post: Post) =  postDao.updatePost(post)
+    suspend fun deletePost(post: Post) =  postDao.deletePost(post)
 
-
-    fun getPostsLive(): LiveData<List<Post>> = postDao.getAllPosts().asLiveData()
-
-    fun searchPosts(keyword: String): Flow<List<Post>> {
-        val clean = keyword.trim()
-        return if (clean.isBlank()) postDao.getAllPosts() // trả list ban đầu
-        else postDao.searchPosts(clean)
-    }
-
-
-    suspend fun insertPost(post: Post) = withContext(Dispatchers.IO) { postDao.insertPost(post) }
-    suspend fun insertPosts(posts: List<Post>) = withContext(Dispatchers.IO) { postDao.insertPosts(posts) }
-    suspend fun updatePost(post: Post) = withContext(Dispatchers.IO) { postDao.updatePost(post) }
-    suspend fun deletePost(post: Post) = withContext(Dispatchers.IO) { postDao.deletePost(post) }
-
-    suspend fun fetchPostsFromApi(): List<Post> = withContext(Dispatchers.IO) {
-        if (!networkUtil.isNetworkAvailable()) return@withContext emptyList()
-        return@withContext try {
+    suspend fun fetchPostsFromApi(): List<Post> {
+        if (!networkUtil.isNetworkAvailable()) return emptyList()
+        return try {
             val posts = apiService.getPosts()
-            postDao.insertPosts(posts)
+            if (posts.isNotEmpty()) {
+                // insert mà không cần withContext, Room tự chạy IO
+                postDao.insertPosts(posts)
+            }
             posts
         } catch (e: Exception) {
             emptyList()

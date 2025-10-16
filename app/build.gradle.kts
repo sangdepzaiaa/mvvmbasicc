@@ -96,7 +96,12 @@ dependencies {
     implementation(libs.datastore.preferences)
     implementation(libs.datastore.core)
 
+    //animation
     implementation("nl.dionsegijn:konfetti-xml:2.0.2")
+
+
+    //fragment ktx
+    implementation(libs.fragment.ktx)
 
 
 }

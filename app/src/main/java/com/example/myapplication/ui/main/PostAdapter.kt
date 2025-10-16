@@ -32,7 +32,6 @@ class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHoler>(Callback){
                 postImage.loadCircleImage(
                     "https://randomuser.me/api/portraits/men/${post.id % 100}.jpg"
                 )
-
             }
         }
     }

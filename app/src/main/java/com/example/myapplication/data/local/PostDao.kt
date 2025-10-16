@@ -23,8 +23,8 @@ interface PostDao{
     @Delete
     suspend fun deletePost(post: Post)
 
-    @Query("SELECT * FROM posts WHERE title LIKE '%' || :keyword || '%' OR body LIKE '%' || :keyword || '%' ")
-    fun searchPosts(keyword: String): Flow<List<Post>>
+//    @Query("SELECT * FROM posts WHERE title LIKE '%' || :keyword || '%' OR body LIKE '%' || :keyword || '%' ")
+//     fun searchPosts(keyword: String): Flow<List<Post>>
 
     @Query("SELECT * FROM posts")
     fun getAllPosts(): Flow<List<Post>>

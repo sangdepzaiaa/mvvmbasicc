@@ -38,15 +38,10 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
         setupFab()
         bindViewModel()
-        setupSearch()
     }
-
-
-
 
     private fun setupRecyclerView() {
         binding.recyclerView.adapter = postAdapter
-
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) binding.fabAdd.hide()
@@ -94,32 +89,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupSearch() {
-        // Cập nhật query khi user gõ
-        binding.searchEditText.addTextChangedListener { editable ->
-            viewModel.onSearchChanged(editable.toString())
-        }
-
-        // Collect Flow realtime searchResults
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.searchResults.collect { posts ->
-                    postAdapter.submitList(posts) {
-                        binding.recyclerView.postDelayed({
-                            if (binding.searchEditText.text.isNullOrEmpty() && posts.isNotEmpty()) {
-                                (binding.recyclerView.layoutManager as? LinearLayoutManager)
-                                    ?.scrollToPositionWithOffset(0, 0)
-                            }
-                        }, 500) // đợi 100ms để text update
-                    }
-
-                }
-            }
-        }
-
-    }
-
     private fun bindViewModel() {
+
+        viewModel.posts.observe(this){ posts ->
+            postAdapter.submitList(posts)
+        }
         // Observe chỉ error
         viewModel.error.observe(this) { error ->
             error?.let {
