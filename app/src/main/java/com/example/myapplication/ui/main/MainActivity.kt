@@ -1,7 +1,11 @@
 package com.example.myapplication.ui.main
 
 
+import android.content.ContentValues
+import android.content.Context
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -10,12 +14,16 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.data.local.PostDao
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.ui.dialog.DialogHelp.showPostPopup
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
 import nl.dionsegijn.konfetti.core.PartyFactory
 import nl.dionsegijn.konfetti.core.Position
@@ -23,6 +31,7 @@ import nl.dionsegijn.konfetti.core.emitter.Emitter
 import nl.dionsegijn.konfetti.core.models.Shape
 import nl.dionsegijn.konfetti.core.models.Size
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 
@@ -35,12 +44,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        setupRecyclerView()
+        setupView()
         setupFab()
         bindViewModel()
     }
 
-    private fun setupRecyclerView() {
+    private fun setupView() {
         binding.recyclerView.adapter = postAdapter
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
@@ -60,6 +69,19 @@ class MainActivity : AppCompatActivity() {
                     viewModel.deletePost(post)
                 }
             )
+        }
+
+        binding.btnSavePrivate.setOnClickListener {
+            viewModel.savePostsToExternalPrivate(this)
+        }
+
+        binding.btnLoad.setOnClickListener {
+            val loaded = viewModel.loadPostsFromExternalPrivate(this)
+            Log.d("FilePath", "📂 Loaded: $loaded")
+        }
+
+        binding.btnSavePublic.setOnClickListener {
+            viewModel.savePostsToPublicDownloads(this@MainActivity)
         }
     }
 
@@ -126,4 +148,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.konfettiView.start(party)
     }
+
+
+
+
+
+
+
 }
