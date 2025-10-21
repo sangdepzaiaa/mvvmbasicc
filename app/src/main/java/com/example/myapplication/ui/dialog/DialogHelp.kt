@@ -6,33 +6,33 @@ import android.widget.Toast
 import com.example.myapplication.R
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.LayoutBottomSheetPostBinding
-import com.example.myapplication.extension.ExtImg.loadCircleImage
+import com.example.myapplication.extension.ExtImg.loadImg
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-object DialogHelp {
-    fun showPostPopup(context: Context, post: Post?, onSave: (title: String, body: String) -> Unit, onDelete: (() -> Unit)? = null) {
+
+//"https://randomuser.me/api/portraits/women/${post?.id % 100}.jpg"
+
+object DialogHelp{
+    fun showPostPopup(context: Context, post: Post?,onSave: (title:String,body:String) -> Unit, onDelete: (()->Unit)?=null){
         val binding = LayoutBottomSheetPostBinding.inflate(LayoutInflater.from(context))
         val dialog = BottomSheetDialog(context)
         dialog.setContentView(binding.root)
 
-        binding.imgAvatar.loadCircleImage("https://example.com/avatar.jpg")
+        binding.imgAvatar.loadImg("https://randomuser.me/api/portraits/women/${post?.id ?: 100}.jpg")
 
-
-        post?.let {
-            binding.run {
-                etTitle.setText(it.title)
-                etBody.setText(it.body)
-            }
+        binding.run {
+            etTitle.setText(post?.title)
+            etBody.setText(post?.body)
         }
 
         binding.btnSave.setOnClickListener {
             val title = binding.etTitle.text.toString().trim()
             val body = binding.etBody.text.toString().trim()
 
-            if (title.isNotEmpty() && body.isNotEmpty()) {
-                onSave(title, body)
+            if(title.isNotEmpty() && body.isNotEmpty()){
+                onSave.invoke(title,body)
                 dialog.dismiss()
-            } else {
+            }else{
                 Toast.makeText(context, R.string.title_body_no_empty, Toast.LENGTH_SHORT).show()
             }
         }
@@ -42,11 +42,17 @@ object DialogHelp {
             dialog.dismiss()
         }
 
-        binding.root.alpha = 0f
-        binding.root.animate().alpha(1f).setDuration(250).start()
-
-
+        binding.root.apply {
+            alpha = 0f     // độ mờ f:FLoat:
+            scaleX = 0.5f  // chiều ngang
+            scaleY = 0.5f  // chiều dọc
+            animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(350)
+                .start()
+        }
         dialog.show()
     }
-
 }

@@ -5,7 +5,7 @@ import com.example.myapplication.data.local.AppDatabase
 import com.example.myapplication.data.remote.ApiService
 import com.example.myapplication.data.repository.PostRepository
 import com.example.myapplication.ui.main.MainViewModel
-import com.example.myapplication.util.NetworkUtil
+
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,29 +15,30 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-val networkModule = module {
+// "https://jsonplaceholder.typicode.com/"
 
-    // OkHttp
+val networkModule = module{
     single {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-        OkHttpClient.Builder()
+         OkHttpClient.Builder()
+            .readTimeout(30L,java.util.concurrent.TimeUnit.SECONDS)
+            .writeTimeout(30L,java.util.concurrent.TimeUnit.SECONDS)
+            .connectTimeout(30L,java.util.concurrent.TimeUnit.SECONDS)
             .addInterceptor(logging)
             .build()
     }
 
-    // Retrofit
-    single {
-        Retrofit.Builder()
+    single{
+         Retrofit.Builder()
             .baseUrl("https://jsonplaceholder.typicode.com/")
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .client(get())
             .build()
     }
 
-    // ApiService
-    single {
+    single<ApiService> {
         get<Retrofit>().create(ApiService::class.java)
     }
 }

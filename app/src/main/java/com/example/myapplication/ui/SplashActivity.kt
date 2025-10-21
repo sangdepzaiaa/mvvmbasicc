@@ -12,14 +12,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SplashActivity : AppCompatActivity(){
-    private val binding by lazy {
+    val binding by lazy{
         ActivitySplashBinding.inflate(layoutInflater)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         lifecycleScope.launch(Dispatchers.IO) {
-            delay(1000)
+            delay(2000L)
             withContext(Dispatchers.Main){
                 startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                 finish()
