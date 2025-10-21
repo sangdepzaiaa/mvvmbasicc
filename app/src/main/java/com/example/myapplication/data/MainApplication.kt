@@ -12,15 +12,16 @@ import org.koin.core.context.startKoin
 class MainApplication : Application(){
     override fun onCreate() {
         super.onCreate()
-        startKoin {
+        startKoin{
             androidContext(this@MainApplication)
             modules(
-                databaseModule,
-                 networkModule,
-                repositoryModule,
-                utilModule,
-                viewModelModule
-
+                listOf(
+                    databaseModule,
+                    networkModule,
+                    repositoryModule,
+                    utilModule,
+                    viewModelModule
+                )
             )
         }
     }

@@ -7,10 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "posts")
 data class Post(
     @PrimaryKey
-    @ColumnInfo("id")
     val id:Int,
-    @ColumnInfo("title")
-    val title:String,
-    @ColumnInfo("boby")
-    val boby: String
+    val title: String,
+    val body:String
 )

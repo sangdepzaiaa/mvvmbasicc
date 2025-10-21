@@ -7,54 +7,56 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.databinding.ItemPostBinding
-import com.example.myapplication.extension.ExtImg.loadCircleImage
+import com.example.myapplication.extension.ExtImg.loadImg
+
+//"https://randomuser.me/api/portraits/men/${post.id % 100}.jpg"
+
+ class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(DiffutilCallback){
+
+    lateinit var onClickItem: (Post) -> Unit
+    class PostViewHolder(val binding: ItemPostBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(post: Post, onCLickItem:(Post) -> Unit){
+            binding.run {
+                postTitle.text = post.title
+                postBody.text = post.body
+                postImage.loadImg("https://randomuser.me/api/portraits/men/${post.id % 100}.jpg")
+
+                root.setOnClickListener {
+                    onCLickItem(post)
+                }
+            }
 
 
-class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHoler>(Callback){
-
-    lateinit var onItemClick: (Post) -> Unit
+        }
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): PostViewHoler {
-        return PostViewHoler(ItemPostBinding.inflate(LayoutInflater.from(parent.context),parent,false))
-    }
-     class PostViewHoler(var binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(post: Post,onItemClick: (Post) -> Unit){
-            binding.run {
-                postTitle.text = post.title
-                postBody.text = post.body
-                root.setOnClickListener {
-                    onItemClick(post)
-                }
-
-                postImage.loadCircleImage(
-                    "https://randomuser.me/api/portraits/men/${post.id % 100}.jpg"
-                )
-            }
-        }
+    ): PostViewHolder {
+        return PostViewHolder(ItemPostBinding.
+        inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
-
-    override fun onBindViewHolder(holder: PostViewHoler, position: Int) {
-        holder.bind(getItem(position), onItemClick)
+    override fun onBindViewHolder(
+        holder: PostViewHolder,
+        position: Int
+    ) {
+        holder.bind(getItem(position),onClickItem )
     }
-
-
-
     override fun getItemCount(): Int {
         return currentList.size
     }
 
+
 }
 
-object Callback : DiffUtil.ItemCallback<Post>(){
+object DiffutilCallback : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(
         oldItem: Post,
         newItem: Post
     ): Boolean {
-        return  oldItem.id == newItem.id
+       return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(

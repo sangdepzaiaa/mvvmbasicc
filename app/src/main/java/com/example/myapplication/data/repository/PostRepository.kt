@@ -1,15 +1,13 @@
 package com.example.myapplication.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import com.example.myapplication.data.local.PostDao
 import com.example.myapplication.data.model.Post
 import com.example.myapplication.data.remote.ApiService
 import com.example.myapplication.util.NetWorkUtil
+import com.example.myapplication.util.NetWorkUtil
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 
 class PostRepository(
    private val postDao: PostDao,
@@ -26,6 +24,7 @@ class PostRepository(
         return try {
             val posts = apiService.getPosts()
             if (posts.isNotEmpty()){
+            if (posts.isEmpty()){
                 postDao.insertPosts(posts)
             }
             return posts

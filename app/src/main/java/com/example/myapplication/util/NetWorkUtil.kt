@@ -5,22 +5,21 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 
 class NetWorkUtil(context: Context){
-    private val connectivityManager  = context.applicationContext.
+    private val connectivityManager = context.applicationContext.
     getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    fun isNetwordAvailable(): Boolean{
+    fun isNetworkAvailable():Boolean{
         val network = connectivityManager.activeNetwork ?: return false
         val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
 
-        val hasInternet =
-            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
-                    capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+        val hasInternet = capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
 
-        val isConnected = capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+        val hasConnected = capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ||
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
 
-        return hasInternet && isConnected
+        return hasInternet && hasConnected
     }
 }
