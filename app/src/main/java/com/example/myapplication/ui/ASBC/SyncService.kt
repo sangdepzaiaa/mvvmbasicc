@@ -12,9 +12,13 @@ class SyncService: Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val br = Intent("ABC")
-        br.putExtra("data","sync data success")
-        sendBroadcast(br)
+        Thread{
+            Thread.sleep(3000)
+            val br = Intent("ABC")
+            br.putExtra("data","sync data success")
+            sendBroadcast(br)
+        }.start()
+
         return START_NOT_STICKY
     }
 

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -35,7 +36,10 @@ class ASBCActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val intentFilter = IntentFilter("ABC")
-        registerReceiver(broadcastReceiver,intentFilter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Android 8+ (API 26)
+            registerReceiver(broadcastReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED)
+        }
     }
 
     override fun onStop() {
