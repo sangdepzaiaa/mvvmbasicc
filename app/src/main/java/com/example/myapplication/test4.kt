@@ -1,7 +1,5 @@
 package com.example.myapplication
 
-import org.koin.core.component.getScopeName
-
 abstract class Animall(var namee: String){
     abstract fun abc()
     fun move( age:Int) = println("ABC $namee + $age")

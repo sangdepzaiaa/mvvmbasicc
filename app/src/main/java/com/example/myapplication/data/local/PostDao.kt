@@ -13,20 +13,21 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PostDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPost(post: Post)
+    suspend fun insertPost(post: Post) //hàm coroutine chạy măc định IO thread
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPosts(posts: List<Post>)
+
+    @Query("SELECT * FROM posts")
+     fun getALlPost() : Flow<List<Post>>
+
     @Update
     suspend fun updatePost(post: Post)
 
     @Delete
     suspend fun deletePost(post: Post)
+}
+
 
 //    @Query("SELECT * FROM posts WHERE title LIKE '%' || :keyword || '%' OR body LIKE '%' || :keyword || '%' ")
 //     fun searchPosts(keyword: String): Flow<List<Post>>
-
-    @Query("SELECT * FROM posts")
-    fun getAllPosts(): Flow<List<Post>>
-
-}

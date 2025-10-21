@@ -9,18 +9,19 @@ import com.example.myapplication.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class MainApplication: Application(){
+class MainApplication : Application(){
     override fun onCreate() {
         super.onCreate()
         startKoin {
             androidContext(this@MainApplication)
-            modules( listOf(
-                networkModule,
+            modules(
                 databaseModule,
-                utilModule,
+                 networkModule,
                 repositoryModule,
+                utilModule,
                 viewModelModule
-            ))
+
+            )
         }
     }
 }
