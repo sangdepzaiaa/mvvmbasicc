@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 
 class MainViewModel(val repository: PostRepository): ViewModel(){
-    val posts:LiveData<List<Post>> = repository.allPosts.asLiveData()
+    val posts:LiveData<List<Post>> = repository.allPost.asLiveData()
 
     val _error = MutableLiveData<String>()
     val error:LiveData<String> get() = _error
@@ -20,7 +20,7 @@ class MainViewModel(val repository: PostRepository): ViewModel(){
     init {
         // Đảm bảo LiveData được observe trước khi fetch API
         viewModelScope.launch {
-            val postsFromApi = repository.fetchPostsFromApi()
+            val postsFromApi = repository.fetchAllPost()
             if (postsFromApi.isEmpty()) {
                 _error.postValue("Cannot fetch posts or API empty")
             }
@@ -29,7 +29,7 @@ class MainViewModel(val repository: PostRepository): ViewModel(){
 
 
     fun insertPost(post: Post) = viewModelScope.launch { repository.insertPost(post) }
-    fun insertPosts(posts:List<Post>) = viewModelScope.launch { repository.inserposts(posts) }
+    fun insertPosts(posts:List<Post>) = viewModelScope.launch { repository.insertPosts(posts) }
     fun deletePost(post: Post) = viewModelScope.launch { repository.deletePost(post) }
     fun updatepost(post:Post) = viewModelScope.launch { repository.updatePost(post) }
 

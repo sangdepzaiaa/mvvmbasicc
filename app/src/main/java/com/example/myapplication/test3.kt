@@ -5,7 +5,7 @@ fun abc(){
     var number2 = number1
     print(number1[1])
 
-
+// collect/object thì tham trị là tham chiếu, so sánh địa chỉ ô nhớ, nguyên thủy là tham trị giá trị, so sánh giá trị
     println(number1 == number2)
     println(number1 === number2)
 
@@ -289,6 +289,9 @@ fun scopeFun(){
 //nó không được định nghĩa trên đối tượng person mà là một hàm độc lập nhận person làm tham số.
 // nên cho vào also,let,apply,run
 // let, also nhận it , run,apply,with nhận this
+// apply,also tra về object ban đầu println: vẫn trả về object
+// let,run,with trả về giá trị biểu thức cuối cùng, println có thể trả về unit
+//
 
 fun main(){
    // abc()
@@ -343,6 +346,9 @@ fun main(){
 
     scopeFun()
 
+    //Được viết tắt khi lambda nằm cuối danh sách tham số
+    //và số tham số trong lambda ≤ 1 (để dùng it).
+    // nhiều tham số dùng nhiều biến,không tham số bỏ luoonh ngoặc tròn
     var result = {x:Int ->  x*x}
     println(highFun(2,result))
     println(highFun(2,::double))

@@ -16,29 +16,40 @@ import com.example.myapplication.databinding.ActivityAsbcactivityBinding
 
 class ASBCActivity : AppCompatActivity() {
     private val binding by lazy { ActivityAsbcactivityBinding.inflate(layoutInflater) }
-    private lateinit var broadcastReceiver : BroadcastReceiver
+    private lateinit var broadcastReceiver: BroadcastReceiver
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        broadcastReceiver = object  : BroadcastReceiver(){
+        broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(p0: Context?, p1: Intent?) {
                 val msg = p1?.getStringExtra("data")
-                Toast.makeText(this@ASBCActivity,msg, Toast.LENGTH_LONG).show()
+                Toast.makeText(this@ASBCActivity, msg, Toast.LENGTH_LONG).show()
+
+                // ✅ Đọc lại từ ContentProvider
+                val cursor = contentResolver.query(
+                    MyContentProvider.CONTENT_URI, null, null, null, null
+                )
+                cursor?.use {
+                    if (it.moveToLast()) {
+                        val data = it.getString(it.getColumnIndexOrThrow("message"))
+                        Toast.makeText(this@ASBCActivity,"$data", Toast.LENGTH_SHORT).show()
+                       // binding.textView.text = data
+                    }
+                }
             }
         }
 
         val intent = Intent(this, SyncService::class.java)
         startService(intent)
-
     }
 
     override fun onStart() {
         super.onStart()
-        val intentFilter = IntentFilter("ABC")
+        val filter = IntentFilter("com.example.myapp.ABC")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Android 8+ (API 26)
-            registerReceiver(broadcastReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED)
+            registerReceiver(broadcastReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
         }
     }
 
