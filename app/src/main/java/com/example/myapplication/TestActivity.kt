@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.myapplication.databinding.ActivityTestBinding
@@ -16,38 +17,39 @@ class TestActivity : AppCompatActivity(){
     companion object{
         const val TAG = "TAG"
     }
-    val binding by lazy {
-        ActivityTestBinding.inflate(layoutInflater)
-    }
-
+    val binding by lazy{ ActivityTestBinding.inflate(layoutInflater)}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG,"onCreate")
         setContentView(binding.root)
+        Log.d(TAG,"onCreate")
 
         binding.btnButton.setOnClickListener {
-            var dia = AlertDialog.Builder(this)
-                .setMessage("Show Dialog")
-                .setPositiveButton("YES"){dia,id ->
-                    dia.dismiss()
-                }
-                .setNegativeButton("NO"){dia,id ->
-                    dia.dismiss()
-                }
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
 
         binding.btnButton2.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            val dia = AlertDialog.Builder(this)
+                .setTitle("Hello")
+                .setMessage("This is a dialog")
+                .setPositiveButton("YES"){dia, p -> {
+                    dia.dismiss()
+                }}
+                .setNegativeButton("NO"){dia , p -> {
+                    dia.dismiss()
+                }}
+                .create()
+            dia.show()
         }
 
         binding.btnButton3.setOnClickListener {
             var count = 0
             supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                replace<TestFragment>(
-                    containerViewId = R.id.container,
-                    tag = "test_${count++}"
-                )
+              setReorderingAllowed(true)
+              replace<TestFragment>(
+                  containerViewId = R.id.container,
+                  tag = "${TestFragment::class.java.name} + ${count++}"
+              )
             }
         }
     }
