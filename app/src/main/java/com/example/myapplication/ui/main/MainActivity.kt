@@ -89,8 +89,6 @@ class MainActivity : AppCompatActivity(){
 
       }
     }
-
-
 }
 
 //        binding.btnSavePrivate.setOnClickListener {
