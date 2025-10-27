@@ -177,6 +177,8 @@ class Going(){
     }
 }
 
+
+//val chạy được lúc biên dịch và runtime ,const val cchayj lucs biên dịch
 data class Userr(val name: String, val age: Int)
 
 fun mainn() {

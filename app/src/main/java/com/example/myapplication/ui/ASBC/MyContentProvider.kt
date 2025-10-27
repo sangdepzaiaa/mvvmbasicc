@@ -45,4 +45,6 @@ class MyContentProvider : ContentProvider() {
     override fun getType(uri: Uri): String? = null
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int = 0
     override fun update(uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int = 0
+
+
 }

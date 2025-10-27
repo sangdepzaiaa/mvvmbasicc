@@ -209,6 +209,7 @@ class DialogHelper2(){
     fun inscreaseB(){
         b++
         println("$b")
+        loading
     }
 }
 

@@ -23,3 +23,5 @@ class NetWorkUtil(context: Context){
         return hasInternet && hasConnected
     }
 }
+
+internal class Profile33(val a:Int)
