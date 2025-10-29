@@ -148,6 +148,7 @@ class sod{
 
 enum class EnumClass{
     A,B,C
+
 }
 
 fun EnumClass2(x : EnumClass){
@@ -156,12 +157,14 @@ fun EnumClass2(x : EnumClass){
         EnumClass.B -> println("This is B")
         EnumClass.C -> println("This is C")
     }
+
 }
 
 sealed class SealedClass{
     data class getData(var content: String): SealedClass()
     data class setData(var title: Int): SealedClass()
     object Loading: SealedClass()
+
 }
 
 fun SealedClass2(x: SealedClass){
@@ -172,14 +175,14 @@ fun SealedClass2(x: SealedClass){
     }
 }
 
-class AA{
-    var amk = 5
-    inner class BB{
-        init {
-            println("$amk")
-        }
-    }
-}
+//class AA{
+//    var amk = 5
+//    inner class BB{
+//        init {
+//            println("$amk")
+//        }
+//    }
+//}
 
 fun hofun(a:Int, b: (Int) -> Int):Int{
     return b(a)
@@ -209,7 +212,7 @@ class DialogHelper2(){
     fun inscreaseB(){
         b++
         println("$b")
-        loading
+
     }
 }
 
