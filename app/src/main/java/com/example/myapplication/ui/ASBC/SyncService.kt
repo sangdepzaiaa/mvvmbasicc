@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.ContentValues
 import android.content.Intent
+import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 
@@ -13,16 +14,7 @@ class SyncService: Service() {
 
     override fun onCreate() {
         super.onCreate()
-        val channelId = "service_demo"
-        val channel =
-            NotificationChannel(channelId, "Demo Service", NotificationManager.IMPORTANCE_LOW)
-        getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
-        val notification = NotificationCompat.Builder(this, channelId)
-            .setContentTitle("Foreground Service")
-            .setContentText("Đang chạy nền...")
-            .setSmallIcon(android.R.drawable.ic_media_play)
-            .build()
-        startForeground(1, notification)
+        //có thể thêm notification
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

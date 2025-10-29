@@ -12,8 +12,7 @@ import com.example.myapplication.extension.ExtImg.loadImg
 //"https://randomuser.me/api/portraits/men/${post.id % 100}.jpg"
 
  class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(DiffutilCallback){
-
-    lateinit var onClickItem: (Post) -> Unit
+     lateinit var onClickItem: (Post) -> Unit
     class PostViewHolder(val binding: ItemPostBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post, onCLickItem:(Post) -> Unit){
             binding.run {
@@ -25,8 +24,6 @@ import com.example.myapplication.extension.ExtImg.loadImg
                     onCLickItem(post)
                 }
             }
-
-
         }
     }
 
@@ -44,6 +41,7 @@ import com.example.myapplication.extension.ExtImg.loadImg
     ) {
         holder.bind(getItem(position),onClickItem )
     }
+
     override fun getItemCount(): Int {
         return currentList.size
     }

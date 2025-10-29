@@ -28,6 +28,9 @@ interface PostDao{
     fun getAllPosts(): Flow<List<Post>>
 }
 
+//khi trả về flow: Room biết rằng Flow là luồng bất đồng bộ, nên nó tự quản lý việc query
+//trên thread nền (I/O thread) và chỉ emit kết quả lên luồng dữ liệu Flow — mà không bao giờ chặn main thread. nên không cần suspend
+
 //    @Query("SELECT * FROM posts WHERE title LIKE '%' || :keyword || '%' OR body LIKE '%' || :keyword || '%' ")
 //     fun searchPosts(keyword: String): Flow<List<Post>>
 

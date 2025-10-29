@@ -1,6 +1,5 @@
 package com.example.myapplication
 
-class Lazzylate324(){
 class Animal23(var co:String){
     var a11 = Animal23("A")
     var b11 = Animal23("B")
@@ -50,13 +49,6 @@ enum class FF(var content2:String){
 fun printanimal(co: Animal23){
     when(co){
 
-     var color = 7 * 44
-         get() = field*44
-         set(value) {
-            color = color * value
-             changeColorOfButton()
-         }
-     fun changeColorOfButton() {
     }
 }
 
@@ -88,22 +80,18 @@ fun hhoo(a12: Int, b12: (Int) -> Int):Int{
     return b12(a12)
 }
 
-val loading = "a"
 fun hhoo1(a12:Int):Int{
     return a12*a12
 }
 
-enum class State(val a:String){
 fun hhoo2(a12:Int):Int{
     return a12*a12*a12*a12
 }
 
-    LOADING("a"), BBB("b");
 fun String.converttostring(str : String): String{
     return "$this + sdas"
 }
 
-    var nj : String =""
 object  Heee{
     var a = 9
 
@@ -114,11 +102,7 @@ class Hooo{
 
 }
 
-
 fun main(){
-    println(loading)
-    println(loading)
-}
     var a33 = User44("ss",99)
     println(a33)
     println("----------------------")

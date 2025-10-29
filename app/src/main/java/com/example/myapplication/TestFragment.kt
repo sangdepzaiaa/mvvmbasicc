@@ -14,19 +14,16 @@ class TestFragment : Fragment(){
     companion object{
         const val TAGG = "TAGG"
     }
-    val _binding by lazy { FragmentTestBinding.inflate(layoutInflater)  }
-    val binding get() = _binding
+    val binding by lazy { FragmentTestBinding.inflate(layoutInflater)  }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Log.d(TAGG,"onAttach")
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAGG,"onCreate")
-
     }
 
     override fun onCreateView(
@@ -35,7 +32,6 @@ class TestFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         Log.d(TAGG,"onCreateView")
-
         return binding.root
     }
 

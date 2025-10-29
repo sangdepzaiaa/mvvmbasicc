@@ -78,8 +78,8 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun bindVM() {
-      viewModel.posts.observe(this){posts ->
-          postAdapter.submitList(posts)
+      viewModel.posts.observe(this){listPosts ->
+          postAdapter.submitList(listPosts)
       }
 
       viewModel.error.observe(this){error ->

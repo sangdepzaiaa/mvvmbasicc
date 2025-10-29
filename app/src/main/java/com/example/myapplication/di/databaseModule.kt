@@ -12,8 +12,8 @@ val databaseModule = module{
 
         val migration_2_3 = object : Migration(2,3){
             override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("ALTER TABLE posts ADD COLUMN content TEXT DEFAULT '' NOT NULL")
-            }
+                    db.execSQL("ALTER TABLE posts ADD COLUMN content TEXT DEFAULT '' NOT NULL")
+                }
         }
 
 
@@ -30,8 +30,6 @@ val databaseModule = module{
     }
 
     single { get<AppDatabase>().postDao() }
-
-
 
 }
 

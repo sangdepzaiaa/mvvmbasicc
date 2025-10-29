@@ -43,14 +43,14 @@ class TestActivity : AppCompatActivity(){
         }
 
         binding.btnButton3.setOnClickListener {
-            var count = 0
-            supportFragmentManager.commit {
+          var count = 0
+          supportFragmentManager.commit {
               setReorderingAllowed(true)
               replace<TestFragment>(
                   containerViewId = R.id.container,
-                  tag = "${TestFragment::class.java.name} + ${count++}"
+                  tag = "${TestFragment::class.java.name + count}"
               )
-            }
+          }
         }
     }
 

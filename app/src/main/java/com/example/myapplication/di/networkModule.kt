@@ -42,3 +42,7 @@ val networkModule = module{
         get<Retrofit>().create(ApiService::class.java)
     }
 }
+
+//Mỗi single trong Koin là một dependency (đối tượng) được đăng ký vào Koin container.
+//Khi bạn gọi get<T>(), Koin sẽ lấy ra instance của T (đã đăng ký trước đó).
+// .client(get())  .client nhận OkHttpClient làm tham số nên nó get() module  OkHttpClient.Builder() ở trên
